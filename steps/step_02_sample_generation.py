@@ -12,13 +12,15 @@ from helpers.types_helper import Dataset
 
 def handle_pixels(pixels: np.array):
     if pixels.max() != pixels.min():
-        delta = pixels.max() - pixels.min()
-        pixels = np.absolute(pixels.astype("float64")) / delta
-        pixels = 1 - pixels
-        pixels = pixels + np.absolute(pixels.min())
+        min_value = np.min(pixels)
+        max_value = np.max(pixels)
+        mapped_pixels = (pixels - min_value) / (max_value - min_value)
+
+        # Ajustar a escala para [0, 255]
+        mapped_pixels_scaled = (mapped_pixels * 255).astype(np.uint8)
     else:
-        pixels = np.absolute(pixels) * 0
-    return pixels
+        mapped_pixels_scaled = np.absolute(pixels) * 0
+    return mapped_pixels_scaled
 
 
 def reshape(samples: np.array):
