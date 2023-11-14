@@ -10,8 +10,15 @@ from helpers.files_paths_helper import Path
 from helpers.types_helper import Dataset
 
 
-def handle_pixels(sample_pixels: np.array):
-    return 1 / (1 + np.exp(-sample_pixels))
+def handle_pixels(pixels: np.array):
+    if pixels.max() != pixels.min():
+        delta = pixels.max() - pixels.min()
+        pixels = np.absolute(pixels.astype("float64")) / delta
+        pixels = 1 - pixels
+        pixels = pixels + np.absolute(pixels.min())
+    else:
+        pixels = np.absolute(pixels) * 0
+    return pixels
 
 
 def reshape(samples: np.array):
@@ -80,7 +87,7 @@ class SampleHandler:
             intervals = file.readlines()[start_window:end_window]
             for interval in intervals:
                 sample = np.array(interval.split(','), dtype="float64")
-                # sample = handle_pixels(sample)
+                sample = handle_pixels(sample)
                 sample = sample.reshape(self.dataset.width, self.dataset.height)
                 if sample.max() > sample.min():
                     samples.append(sample)
