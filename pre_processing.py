@@ -1,9 +1,11 @@
-from instances.dataset_instances import SF
+import warnings
+
+from instances.dataset_instances import SF, NGSIM
 from steps.step_01_pre_processing import pre_processing
-from steps.step_02_sample_generation import SampleHandler, heat_maps_samples_view
+from steps.step_03_baseline_computation import compute_baseline
+warnings.filterwarnings("ignore")
 
-pre_processing(SF)
 
-sh = SampleHandler(SF)
-dataset, indices = sh.samples_as_list(5, 7)
-heat_maps_samples_view(dataset, 9, 4)
+pre_processing(NGSIM)
+
+compute_baseline(NGSIM)

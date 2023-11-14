@@ -1,13 +1,13 @@
 from helpers.types_helper import Dataset, LatYLonXTimeIndices
 
 NGSIM = Dataset(name='ngsim',
-                hours_per_window=0.2,
+                hours_per_window=0.1,
                 first_window=1113433135300,
                 lat_y_min=0.0,
                 lat_y_max=1790.771,
                 lon_x_min=0.0,
                 lon_x_max=96.996,
-                resolution=20,
+                resolution=100,
                 indices=LatYLonXTimeIndices(1, 0, 3),
                 is_lat_lon=False)
 
