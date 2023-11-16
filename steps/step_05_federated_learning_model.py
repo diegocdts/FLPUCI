@@ -99,13 +99,11 @@ class FederatedFullConvolutionalAutoEncoder:
             round_iteration = self.iterative_process.next(self.state, training_data)
             self.state = round_iteration[0]
 
-            training_losses, testing_losses = loss_handler.append_fed(round_iteration[1],
-                                                                      self.model_evaluation(testing_data))
+            loss_handler.append_fed(round_iteration[1], self.model_evaluation(testing_data))
             loss_handler.save()
 
         del training_data, testing_data, loss_handler
         gc.collect()
-        return training_losses, testing_losses
 
     def encoder_prediction(self, start_window: int, end_window: int):
         samples, indices_list = self.federated_data_handler.sample_handler.samples_as_list(start_window, end_window)

@@ -14,8 +14,6 @@ class FullConvolutionalAutoEncoder:
         self.sample_handler = sample_handler
         self.f9_checkpoint = Path.f9_checkpoints(self.sample_handler.dataset.name, TypeLearning.CEN)
         self.properties = properties
-        self.encoder = encoder_build(properties)
-        self.decoder = decoder_build(properties)
         self.model = model_build(properties)
         self.compile()
 
@@ -58,8 +56,10 @@ class FullConvolutionalAutoEncoder:
 def dense_nodes_width_height(fcaep: FCAEProperties):
     width, height = fcaep.input_shape[0], fcaep.input_shape[1]
     for _ in fcaep.encode_layers:
-        width = width / 2
-        height = height / 2
+        if width > 1:
+            width = width / 2
+        if height > 1:
+            height = height / 2
     dense_nodes = int(width * height * fcaep.encode_layers[-1])
     return dense_nodes, int(width), int(height)
 
@@ -83,7 +83,7 @@ def decoder_build(fcaep: FCAEProperties):
     decoder.add(tf.keras.layers.InputLayer(input_shape=(fcaep.latent_space,)))
 
     decoder.add(tf.keras.layers.Dense(dense_layer, activation=fcaep.decode_activation))
-    decoder.add(tf.keras.layers.Reshape((height, width, fcaep.decode_layers[0])))
+    decoder.add(tf.keras.layers.Reshape((width, height, fcaep.decode_layers[0])))
 
     for layer in fcaep.decode_layers:
         decoder.add(tf.keras.layers.Conv2DTranspose(layer, fcaep.kernel_size, activation=fcaep.decode_activation,
@@ -95,7 +95,9 @@ def decoder_build(fcaep: FCAEProperties):
 
 def model_build(fcaep: FCAEProperties):
     encoder = encoder_build(fcaep)
+    print(encoder.summary())
     decoder = decoder_build(fcaep)
+    print(decoder.summary())
     return tf.keras.models.Model(inputs=encoder.input, outputs=decoder(encoder.outputs))
 
 
