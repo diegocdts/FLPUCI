@@ -86,7 +86,8 @@ class SampleHandler:
     def get_samples(self, file_path: str, start_window: int, end_window: int):
         samples = []
         with open(file_path) as file:
-            intervals = file.readlines()[start_window:end_window]
+            intervals = file.readlines()[1:]
+            intervals = intervals[start_window:end_window]
             for interval in intervals:
                 sample = np.array(interval.split(','), dtype="float64")
                 sample = handle_pixels(sample)
