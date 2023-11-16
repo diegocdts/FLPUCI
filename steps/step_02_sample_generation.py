@@ -10,6 +10,29 @@ from helpers.files_paths_helper import Path
 from helpers.types_helper import Dataset
 
 
+def compare_samples_reconstructions(samples, reconstructions):
+    if len(samples) > 0 and len(reconstructions) > 0:
+        plt.figure(figsize=(20, 10))
+        plt.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
+
+        for i in range(len(samples)):
+            plt.subplot(1, 2, 1)  # Subplot for sample
+            plt.xticks([])
+            plt.yticks([])
+            plt.grid(False)
+            plt.imshow(samples[i])
+            plt.title("Sample")
+
+            plt.subplot(1, 2, 2)  # Subplot for reconstruction
+            plt.xticks([])
+            plt.yticks([])
+            plt.grid(False)
+            plt.imshow(reconstructions[i])
+            plt.title("Reconstruction")
+
+            plt.show()
+
+
 def handle_pixels(pixels: np.array):
     if pixels.max() != pixels.min():
         min_value = np.min(pixels)
