@@ -13,7 +13,7 @@ def adjust_first_interval(first_interval: int):
 
 
 def get_start_window(end_window: int, sample_selection: SampleSelectionParameters):
-    if sample_selection.sample_selection_type == SampleSelectionType.ACCUMULATED:
+    if sample_selection.sample_selection_type == SampleSelectionType.ACC:
         start_window = 0
     else:
         if end_window - sample_selection.window_size >= 0:

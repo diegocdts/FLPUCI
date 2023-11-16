@@ -38,7 +38,6 @@ class LossesHandler:
         self.testing_losses = np.append(self.testing_losses, testing_loss)
 
         print('Samples: {} | TR loss: {} | TS loss: {}'.format(num_samples, training_loss, testing_loss))
-        return self.training_losses, self.testing_losses
 
     def append_cen(self, training_losses: list, testing_losses: list):
         self.training_losses = np.array(training_losses)
