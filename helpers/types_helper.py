@@ -32,7 +32,7 @@ class Dataset:
                  lat_y_max: float,
                  lon_x_min: float,
                  lon_x_max: float,
-                 resolution: int,
+                 resolution: tuple,
                  indices: LatYLonXTimeIndices,
                  last_window: int = None,
                  is_lat_lon: bool = True):
@@ -52,8 +52,14 @@ class Dataset:
         self.width = None
 
     def set_height_width(self, height, width):
-        self.height = height + 1
-        self.width = width + 1
+        if height % 2 != 0 or height == 0:
+            self.height = height + 1
+        else:
+            self.height = height
+        if width % 2 != 0 or width == 0:
+            self.width = width + 1
+        else:
+            self.width = width
 
 
 class FCAEProperties:

@@ -7,7 +7,7 @@ NGSIM = Dataset(name='ngsim',
                 lat_y_max=2235.252,
                 lon_x_min=0.0,
                 lon_x_max=75.313,
-                resolution=200,
+                resolution=(200, 40),
                 indices=LatYLonXTimeIndices(1, 0, 3),
                 is_lat_lon=False)
 
@@ -18,5 +18,5 @@ SF = Dataset(name='sanfranciscocabs',
              lat_y_max=37.81399,
              lon_x_min=-122.51584,
              lon_x_max=-122.38263,
-             resolution=300,
+             resolution=(300, 300),
              indices=LatYLonXTimeIndices(0, 1, 3))

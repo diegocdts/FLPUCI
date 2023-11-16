@@ -113,7 +113,7 @@ class DisplacementMatrix:
         self.f2_data = Path.f2_data(dataset.name)
         self.f3_dm = Path.f3_dm(dataset.name)
         self.max_window = self.get_max_window()
-        print(self.dataset.width, self.dataset.height)
+        print(self.dataset.height, self.dataset.width)
         self.columns = np.arange(0, self.dataset.width * self.dataset.height, 1)
 
     def get_max_window(self):
@@ -133,8 +133,9 @@ class DisplacementMatrix:
                 max_x = df.x.max()
             if df.y.max() > max_y:
                 max_y = df.y.max()
-        height = round((max_y - min_y) / self.dataset.resolution)
-        width = round((max_x - min_x) / self.dataset.resolution)
+        height = round((max_y - min_y) / self.dataset.resolution[0])
+        width = round((max_x - min_x) / self.dataset.resolution[1])
+        print(max_x, min_x, (max_x - min_x), self.dataset.resolution[1])
         self.dataset.set_height_width(height, width)
         return max_window
 
@@ -150,8 +151,8 @@ class DisplacementMatrix:
                     max_in_trace = row.time
 
                 # cell position calculation
-                x_index = int(row.x / self.dataset.resolution)
-                y_index = int(row.y / self.dataset.resolution)
+                y_index = int(row.y / self.dataset.resolution[0])
+                x_index = int(row.x / self.dataset.resolution[1])
                 cell = (x_index * self.dataset.height) + y_index
 
                 # time a node spends in a cell
