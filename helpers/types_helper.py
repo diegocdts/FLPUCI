@@ -52,8 +52,8 @@ class Dataset:
         self.width = None
 
     def set_height_width(self, height, width):
-        self.height = height
-        self.width = width
+        self.height = height + 1
+        self.width = width + 1
 
 
 class FCAEProperties:

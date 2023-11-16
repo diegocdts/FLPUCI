@@ -80,8 +80,6 @@ class CleaningData:
                                     self.dataset.lon_x_min <= lon_x <= self.dataset.lon_x_max:
                                 lat_y, lon_x = self.convert_to_utm(lat_y, lon_x)
                                 file.write('{},{},{},{}\n'.format(window_index, lon_x, lat_y, time))
-                df = pd.read_csv(output_file_path).sort_values(by='time')
-                df.to_csv(output_file_path, index=False)
 
 
 def xy_adjustment(df: pd.DataFrame):
