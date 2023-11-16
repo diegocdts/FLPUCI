@@ -26,6 +26,9 @@ class LossesHandler:
         self.training_losses = np.array([])
         self.testing_losses = np.array([])
 
+    def get_losses(self):
+        return self.training_losses, self.testing_losses
+
     def append_fed(self, training_metrics, testing_metrics):
         training_loss = list(list(training_metrics.values())[2].values())[0]
         num_samples = list(list(training_metrics.values())[3].values())[0]

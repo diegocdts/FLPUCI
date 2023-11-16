@@ -12,7 +12,7 @@ class FullConvolutionalAutoEncoder:
 
     def __init__(self, sample_handler: SampleHandler, properties: FCAEProperties):
         self.sample_handler = sample_handler
-        self.f11_checkpoint = Path.f9_checkpoints(self.sample_handler.dataset.name, TypeLearning.CEN)
+        self.f9_checkpoint = Path.f9_checkpoints(self.sample_handler.dataset.name, TypeLearning.CEN)
         self.properties = properties
         self.encoder = encoder_build(properties)
         self.decoder = decoder_build(properties)
@@ -29,7 +29,7 @@ class FullConvolutionalAutoEncoder:
                                                   save_weights_only=True, verbose=1)
 
     def training(self, start_window: int, end_window: int, parameters: TrainingParameters):
-        path = get_file_path(self.f11_checkpoint, win_space(start_window, end_window))
+        path = get_file_path(self.f9_checkpoint, win_space(start_window, end_window))
         loss_handler = LossesHandler(path, TypeLearning.CEN)
 
         if path_exists(path):

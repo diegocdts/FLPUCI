@@ -4,7 +4,7 @@ import collections
 import gc
 
 from functions.console_functions import time
-from functions.files_paths_functions import dir_create, win_space, get_file_path
+from functions.files_paths_functions import win_space, get_file_path
 from graphics import LossesHandler
 from helpers.files_paths_helper import Path
 from helpers.types_helper import Dataset, TrainingParameters, FCAEProperties, TypeLearning
@@ -58,7 +58,7 @@ class FederatedFullConvolutionalAutoEncoder:
         self.iterative_process, self.state = self.global_model_start()
         self.evaluator = self.build_evaluator()
         self.dataset_name = federated_data_handler.sample_handler.dataset.name
-        self.f11_checkpoint = Path.f9_checkpoints(self.dataset_name, TypeLearning.FED)
+        self.f9_checkpoint = Path.f9_checkpoints(self.dataset_name, TypeLearning.FED)
         self.manager = None
 
     def model_fn(self):
@@ -84,44 +84,26 @@ class FederatedFullConvolutionalAutoEncoder:
     def model_evaluation(self, testing_data):
         return self.evaluator(self.state.model, testing_data)
 
-    def checkpoint_load(self):
-        last_state, last_round = self.manager.load_latest_checkpoint(self.state)
-        if last_state is not None:
-            self.state = last_state
-            return last_round+1
-        else:
-            return 0
-
-    @staticmethod
-    def checkpoint_manager(path: str, rounds: int):
-        dir_create(path)
-        return tff.simulation.FileCheckpointManager(root_dir=path, prefix='round_', step=1, keep_total=rounds,
-                                                    keep_first=True)
-
     def training(self, start_window: int, end_window: int):
         rounds = self.federated_data_handler.training_parameters.rounds
-        path = get_file_path(self.f11_checkpoint, win_space(start_window, end_window))
-        self.manager = self.checkpoint_manager(path, rounds)
-        next_round = self.checkpoint_load()
+        path = get_file_path(self.f9_checkpoint, win_space(start_window, end_window))
 
         loss_handler = LossesHandler(path, TypeLearning.FED)
-        training_losses, testing_losses = loss_handler.load_fed(next_round)
+        training_losses, testing_losses = loss_handler.get_losses()
 
-        if next_round < rounds:
-            training_data = self.federated_data_handler.users_data(start_window, end_window)
-            testing_data = self.federated_data_handler.users_data(end_window, end_window+1)
+        training_data = self.federated_data_handler.users_data(start_window, end_window)
+        testing_data = self.federated_data_handler.users_data(end_window, end_window+1)
 
-            for round_num in range(next_round, rounds):
-                print('[{}] start: {} | end: {} | round: {}'.format(time(), start_window, end_window, round_num))
-                round_iteration = self.iterative_process.next(self.state, training_data)
-                self.state = round_iteration[0]
-                self.manager.save_checkpoint(self.state, round_num)
+        for round_num in range(0, rounds):
+            print('[{}] start: {} | end: {} | round: {}'.format(time(), start_window, end_window, round_num))
+            round_iteration = self.iterative_process.next(self.state, training_data)
+            self.state = round_iteration[0]
 
-                training_losses, testing_losses = loss_handler.append_fed(round_iteration[1],
-                                                                          self.model_evaluation(testing_data))
-                loss_handler.save()
+            training_losses, testing_losses = loss_handler.append_fed(round_iteration[1],
+                                                                      self.model_evaluation(testing_data))
+            loss_handler.save()
 
-            del training_data, testing_data, loss_handler
+        del training_data, testing_data, loss_handler
         gc.collect()
         return training_losses, testing_losses
 
