@@ -55,7 +55,7 @@ class FullConvolutionalAutoEncoder:
 
 def dense_nodes_width_height(fcaep: FCAEProperties):
     width, height = fcaep.input_shape[0], fcaep.input_shape[1]
-    for _ in fcaep.encode_layers:
+    for _ in [stride for stride in fcaep.encode_strides if stride != 1]:
         if width > 1:
             width = width / 2
         if height > 1:
@@ -68,9 +68,9 @@ def encoder_build(fcaep: FCAEProperties):
     encoder = tf.keras.Sequential()
     encoder.add(tf.keras.layers.InputLayer(input_shape=fcaep.input_shape))
 
-    for layer in fcaep.encode_layers:
+    for index, layer in enumerate(fcaep.encode_layers):
         encoder.add(tf.keras.layers.Conv2D(layer, fcaep.kernel_size, activation=fcaep.encode_activation,
-                                           strides=fcaep.strides, padding=fcaep.padding))
+                                           strides=fcaep.encode_strides[index], padding=fcaep.padding))
     encoder.add(tf.keras.layers.Flatten())
     encoder.add(tf.keras.layers.Dense(fcaep.latent_space, activation=fcaep.encode_activation))
     return encoder
@@ -85,9 +85,9 @@ def decoder_build(fcaep: FCAEProperties):
     decoder.add(tf.keras.layers.Dense(dense_layer, activation=fcaep.decode_activation))
     decoder.add(tf.keras.layers.Reshape((width, height, fcaep.decode_layers[0])))
 
-    for layer in fcaep.decode_layers:
+    for index, layer in enumerate(fcaep.decode_layers):
         decoder.add(tf.keras.layers.Conv2DTranspose(layer, fcaep.kernel_size, activation=fcaep.decode_activation,
-                                                    strides=fcaep.strides, padding=fcaep.padding))
+                                                    strides=fcaep.decode_strides[index], padding=fcaep.padding))
     decoder.add(tf.keras.layers.Conv2DTranspose(1, fcaep.kernel_size, activation=fcaep.decode_activation,
                                                 padding=fcaep.padding))
     return decoder

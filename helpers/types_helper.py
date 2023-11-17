@@ -70,7 +70,7 @@ class FCAEProperties:
                  encode_activation: str,
                  decode_activation: str,
                  kernel_size: tuple,
-                 strides: int,
+                 encode_strides: list,
                  padding: str,
                  latent_space: int,
                  learning_rate: float):
@@ -80,7 +80,8 @@ class FCAEProperties:
         self.encode_activation = encode_activation
         self.decode_activation = decode_activation
         self.kernel_size = kernel_size
-        self.strides = strides
+        self.encode_strides = encode_strides
+        self.decode_strides = encode_strides[::-1]
         self.padding = padding
         self.latent_space = latent_space
         self.learning_rate = learning_rate
