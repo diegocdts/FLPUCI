@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-from functions.array_list_functions import squeeze
+from functions.array_list_functions import squeeze, discrete_pixels
 from functions.files_paths_functions import get_file_path, sorted_files, win_txt, path_exists, metric_win_txt
 from helpers.files_paths_helper import Path
 from helpers.parameters_helper import ImageMetric
@@ -135,8 +135,8 @@ class BaselineComputation:
                                 continue
                             mse[idx_i, idx_j] = f_mse(image_i, image_j)
                             ssim[idx_i, idx_j] = f_ssim(image_i, image_j)
-                            ari[idx_i, idx_j] = f_ari(image_i.reshape(self.width * self.height),
-                                                      image_j.reshape(self.width * self.height))
+                            ari[idx_i, idx_j] = f_ari(discrete_pixels(image_i.reshape(self.width * self.height)),
+                                                      discrete_pixels(image_j.reshape(self.width * self.height)))
                     mse_df = pd.DataFrame(mse)
                     mse_df.to_csv(mse_output_path, index=False)
                     ssim_df = pd.DataFrame(ssim)
