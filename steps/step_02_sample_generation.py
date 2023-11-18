@@ -12,7 +12,6 @@ from helpers.types_helper import Dataset
 
 def compare_samples_reconstructions(samples, reconstructions):
     if len(samples) > 0 and len(reconstructions) > 0:
-        plt.figure(figsize=(20, 10))
         plt.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
 
         for i in range(len(samples)):
@@ -35,15 +34,13 @@ def compare_samples_reconstructions(samples, reconstructions):
 
 def handle_pixels(pixels: np.array):
     if pixels.max() != pixels.min():
-        min_value = np.min(pixels)
-        max_value = np.max(pixels)
-        mapped_pixels = (pixels - min_value) / (max_value - min_value)
-
-        # Ajustar a escala para [0, 255]
-        mapped_pixels_scaled = (mapped_pixels * 255).astype(np.uint8)
+        delta = pixels.max() - pixels.min()
+        pixels = np.absolute(pixels.astype("float64")) / delta
+        pixels = 1 - pixels
+        pixels = pixels + np.absolute(pixels.min())
     else:
-        mapped_pixels_scaled = np.absolute(pixels) * 0
-    return mapped_pixels_scaled
+        pixels = np.absolute(pixels) * 0
+    return pixels
 
 
 def reshape(samples: np.array):
