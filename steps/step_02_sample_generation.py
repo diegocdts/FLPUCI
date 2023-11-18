@@ -34,13 +34,12 @@ def compare_samples_reconstructions(samples, reconstructions):
 
 def handle_pixels(pixels: np.array):
     if pixels.max() != pixels.min():
-        delta = pixels.max() - pixels.min()
-        pixels = np.absolute(pixels.astype("float64")) / delta
-        pixels = 1 - pixels
-        pixels = pixels + np.absolute(pixels.min())
+        min_value = np.min(pixels)
+        max_value = np.max(pixels)
+        mapped_pixels = (pixels - min_value) / (max_value - min_value)
     else:
-        pixels = np.absolute(pixels) * 0
-    return pixels
+        mapped_pixels = np.absolute(pixels) * 0
+    return mapped_pixels
 
 
 def reshape(samples: np.array):
