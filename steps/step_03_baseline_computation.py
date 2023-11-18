@@ -111,6 +111,7 @@ class BaselineComputation:
                 contact_times_df.to_csv(output_file_path, index=False)
 
     def image_metrics(self):
+        win_size = 3
         for interval in range(self.start_window, self.end_window):
             mse_output_path = get_file_path(self.f7_metrics, metric_win_txt(ImageMetric.MSE, interval))
             ssim_output_path = get_file_path(self.f7_metrics, metric_win_txt(ImageMetric.SSIM, interval))
@@ -121,7 +122,8 @@ class BaselineComputation:
                 for file_name in sorted_files(self.f3_dm):
                     file_path = get_file_path(self.f3_dm, file_name)
                     samples_from_window = self.sample_handler.get_samples(file_path, interval, interval + 1)
-                    samples.append(samples_from_window[0])
+                    if len(samples_from_window) > 0:
+                        samples.append(samples_from_window[0])
                 total_samples = len(samples)
                 if total_samples > 0:
                     mse = np.zeros(shape=(total_samples, total_samples))
@@ -134,7 +136,8 @@ class BaselineComputation:
                             if idx_i == idx_j:
                                 continue
                             mse[idx_i, idx_j] = f_mse(image_i, image_j)
-                            ssim[idx_i, idx_j] = f_ssim(image_i, image_j)
+                            ssim[idx_i, idx_j] = f_ssim(discrete_pixels(image_i), discrete_pixels(image_j),
+                                                        win_size=win_size)
                             ari[idx_i, idx_j] = f_ari(discrete_pixels(image_i.reshape(self.width * self.height)),
                                                       discrete_pixels(image_j.reshape(self.width * self.height)))
                     mse_df = pd.DataFrame(mse)
