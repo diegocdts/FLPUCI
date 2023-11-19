@@ -121,9 +121,9 @@ class BaselineComputation:
                 samples = []
                 for file_name in sorted_files(self.f3_dm):
                     file_path = get_file_path(self.f3_dm, file_name)
-                    samples_from_window = self.sample_handler.get_samples(file_path, interval, interval + 1)
-                    if len(samples_from_window) > 0:
-                        samples.append(samples_from_window[0])
+                    samples_from_window = self.sample_handler.get_samples(file_path, interval, interval + 1,
+                                                                          add_empty=True)
+                    samples.append(samples_from_window[0])
                 total_samples = len(samples)
                 if total_samples > 0:
                     mse = np.zeros(shape=(total_samples, total_samples))

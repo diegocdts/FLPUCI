@@ -102,7 +102,7 @@ class SampleHandler:
             del user_samples
         return datasets, indices
 
-    def get_samples(self, file_path: str, start_window: int, end_window: int):
+    def get_samples(self, file_path: str, start_window: int, end_window: int, add_empty: bool = False):
         samples = []
         with open(file_path) as file:
             intervals = file.readlines()[1:]
@@ -112,6 +112,8 @@ class SampleHandler:
                 sample = handle_pixels(sample)
                 sample = sample.reshape(self.dataset.width, self.dataset.height)
                 if sample.max() > sample.min():
+                    samples.append(sample)
+                elif add_empty:
                     samples.append(sample)
                 del sample
         samples = np.array(samples)
