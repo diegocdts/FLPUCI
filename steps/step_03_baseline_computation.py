@@ -136,8 +136,8 @@ class BaselineComputation:
                             if idx_i == idx_j:
                                 continue
                             mse[idx_i, idx_j] = f_mse(image_i, image_j)
-                            ssim[idx_i, idx_j] = f_ssim(discrete_pixels(image_i), discrete_pixels(image_j),
-                                                        win_size=win_size)
+                            data_range = max(image_i.max(), image_j.max()) - min(image_i.min(), image_j.min())
+                            ssim[idx_i, idx_j] = f_ssim(image_i, image_j, win_size=win_size, data_range=data_range)
                             ari[idx_i, idx_j] = f_ari(discrete_pixels(image_i.reshape(self.width * self.height)),
                                                       discrete_pixels(image_j.reshape(self.width * self.height)))
                     mse_df = pd.DataFrame(mse)
