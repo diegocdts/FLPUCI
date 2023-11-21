@@ -108,7 +108,7 @@ class FederatedFullConvolutionalAutoEncoder:
     def encoder_prediction(self, start_window: int, end_window: int):
         samples, indices_list = self.federated_data_handler.sample_handler.samples_as_list(start_window, end_window)
         keras_model = model_build(self.properties)
-        self.state.model.assign_weights_to(keras_model)
+        self.state.global_model_weights.assign_weights_to(keras_model)
         encoder = trained_encoder(keras_model)
         predictions = encoder.predict(samples)
         del samples, encoder
