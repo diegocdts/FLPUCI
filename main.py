@@ -13,18 +13,18 @@ from communities_identification import cen_communities_identification, fed_commu
 warnings.filterwarnings("ignore")
 nest_asyncio.apply()
 
-cen_communities_identification(dataset=NGSIM,
-                               sample_handler=SampleHandler(NGSIM),
+fed_communities_identification(dataset=NGSIM,
                                ae_properties=AE_PROPERTIES,
-                               training_parameters=CENTRALIZED_TRAINING_1,
+                               training_parameters=FEDERATED_TRAINING_1,
                                sli_selection=SLI_3,
                                first_interval=0,
                                last_interval=10,
                                validate_at=NEXT,
                                acc_run=True)
-fed_communities_identification(dataset=NGSIM,
+cen_communities_identification(dataset=NGSIM,
+                               sample_handler=SampleHandler(NGSIM),
                                ae_properties=AE_PROPERTIES,
-                               training_parameters=FEDERATED_TRAINING_1,
+                               training_parameters=CENTRALIZED_TRAINING_1,
                                sli_selection=SLI_3,
                                first_interval=0,
                                last_interval=10,

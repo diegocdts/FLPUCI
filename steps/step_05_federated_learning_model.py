@@ -4,7 +4,7 @@ import collections
 import gc
 
 from functions.console_functions import time
-from functions.files_paths_functions import win_space, get_file_path
+from functions.files_paths_functions import win_space, get_file_path, dir_create
 from graphics import LossesHandler
 from helpers.files_paths_helper import Path
 from helpers.types_helper import Dataset, TrainingParameters, FCAEProperties, TypeLearning
@@ -82,14 +82,14 @@ class FederatedFullConvolutionalAutoEncoder:
         return tff.learning.build_federated_evaluation(self.model_fn)
 
     def model_evaluation(self, testing_data):
-        return self.evaluator(self.state.model, testing_data)
+        return self.evaluator(self.state.global_model_weights, testing_data)
 
     def training(self, start_window: int, end_window: int):
         rounds = self.federated_data_handler.training_parameters.rounds
         path = get_file_path(self.f9_checkpoint, win_space(start_window, end_window))
+        dir_create(path)
 
         loss_handler = LossesHandler(path, TypeLearning.FED)
-        training_losses, testing_losses = loss_handler.get_losses()
 
         training_data = self.federated_data_handler.users_data(start_window, end_window)
         testing_data = self.federated_data_handler.users_data(end_window, end_window+1)

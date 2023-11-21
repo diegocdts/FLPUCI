@@ -30,11 +30,11 @@ class LossesHandler:
         return self.training_losses, self.testing_losses
 
     def append_fed(self, training_metrics, testing_metrics):
-        training_loss = list(list(training_metrics.values())[2].values())[0]
-        num_samples = list(list(training_metrics.values())[3].values())[0]
+        training_loss = training_metrics['client_work']['train']['loss']
+        num_samples = training_metrics['client_work']['train']['num_examples']
         self.training_losses = np.append(self.training_losses, training_loss)
 
-        testing_loss = list(testing_metrics.values())[0]
+        testing_loss = testing_metrics['eval']['loss']
         self.testing_losses = np.append(self.testing_losses, testing_loss)
 
         print('Samples: {} | TR loss: {} | TS loss: {}'.format(num_samples, training_loss, testing_loss))

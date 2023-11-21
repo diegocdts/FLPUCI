@@ -135,7 +135,7 @@ class SampleHandler:
             total_users = len(sorted_files(self.f3_dm))
             file_name = sorted_files(self.f3_dm)[random.randrange(total_users)]
             file_path = get_file_path(self.f3_dm, file_name)
-            single_dataset = self.get_samples(file_path, 0, 1)
+            single_dataset = self.get_samples(file_path, 0, 1, add_empty=True)
             return single_dataset
         dataset = get_random()
         return dataset
