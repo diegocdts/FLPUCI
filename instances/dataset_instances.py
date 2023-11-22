@@ -7,7 +7,7 @@ NGSIM = Dataset(name='ngsim',
                 lat_y_max=2235.252,
                 lon_x_min=0.0,
                 lon_x_max=75.313,
-                resolution=(200, 20),
+                resolution=(40, 40),
                 indices=LatYLonXTimeIndices(1, 0, 3),
                 is_lat_lon=False)
 
