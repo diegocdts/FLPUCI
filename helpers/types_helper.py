@@ -51,15 +51,15 @@ class Dataset:
         self.height = None
         self.width = None
 
-    def set_height_width(self, height, width):
-        if height % 2 != 0 or height == 0:
-            self.height = height + 1
+    def set_height_width(self, float_height: float, float_width: float):
+        if float_height % 2 != 0 or float_height == 0 or not float_height.is_integer:
+            self.height = float_height + 1
         else:
-            self.height = height
-        if width % 2 != 0 or width == 0:
-            self.width = width + 1
+            self.height = float_height
+        if float_width % 2 != 0 or float_width == 0 or not float_width.is_integer():
+            self.width = float_width + 1
         else:
-            self.width = width
+            self.width = float_width
 
 
 class FCAEProperties:
