@@ -35,7 +35,8 @@ class Dataset:
                  resolution: tuple,
                  indices: LatYLonXTimeIndices,
                  last_window: int = None,
-                 is_lat_lon: bool = True):
+                 is_lat_lon: bool = True,
+                 paddingYX: tuple = (False, False)):
         self.name = name
         self.hours_per_window = hours_per_window
         self.first_window = first_window
@@ -46,6 +47,7 @@ class Dataset:
         self.lon_x_max = lon_x_max
         self.resolution = resolution
         self.is_lat_lon = is_lat_lon
+        self.paddingYX = paddingYX
         self.indices = indices
         self.epoch_size = len(str(first_window))
         self.height = None
@@ -53,13 +55,17 @@ class Dataset:
 
     def set_height_width(self, float_height: float, float_width: float):
         if float_height % 2 != 0 or float_height == 0 or not float_height.is_integer:
-            self.height = float_height + 1
+            self.height = int(float_height) + 1
         else:
-            self.height = float_height
+            self.height = int(float_height)
+        if self.paddingYX[0]:
+            self.height = self.height + 2
         if float_width % 2 != 0 or float_width == 0 or not float_width.is_integer():
-            self.width = float_width + 1
+            self.width = int(float_width) + 1
         else:
-            self.width = float_width
+            self.width = int(float_width)
+        if self.paddingYX[1]:
+            self.width = self.width + 2
 
 
 class FCAEProperties:

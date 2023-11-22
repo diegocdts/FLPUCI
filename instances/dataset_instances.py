@@ -9,7 +9,8 @@ NGSIM = Dataset(name='ngsim',
                 lon_x_max=75.313,
                 resolution=(40, 40),
                 indices=LatYLonXTimeIndices(1, 0, 3),
-                is_lat_lon=False)
+                is_lat_lon=False,
+                paddingYX=(False, True))
 
 SF = Dataset(name='sanfranciscocabs',
              hours_per_window=12,

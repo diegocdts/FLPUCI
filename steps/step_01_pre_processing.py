@@ -142,6 +142,14 @@ class DisplacementMatrix:
         cell_stay_time = np.zeros(len(self.columns))
         time_in_trace = 0
 
+        if self.dataset.paddingYX[0]:
+            y_padding = 1
+        else:
+            y_padding = 0
+        if self.dataset.paddingYX[1]:
+            x_padding = 1
+        else:
+            x_padding = 0
         if len(df_window) > 0:
             min_in_trace = max_in_trace = previous_time = df_window.time[0] - 1
 
@@ -150,8 +158,8 @@ class DisplacementMatrix:
                     max_in_trace = row.time
 
                 # cell position calculation
-                y_index = int(row.y / self.dataset.resolution[0])
-                x_index = int(row.x / self.dataset.resolution[1])
+                y_index = int(row.y / self.dataset.resolution[0]) + y_padding
+                x_index = int(row.x / self.dataset.resolution[1]) + x_padding
                 cell = (x_index * self.dataset.height) + y_index
 
                 # time a node spends in a cell
