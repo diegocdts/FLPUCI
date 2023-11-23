@@ -1,3 +1,4 @@
+import asyncio
 import tensorflow as tf
 import tensorflow_federated as tff
 import collections
@@ -59,7 +60,7 @@ class FederatedFullConvolutionalAutoEncoder:
         self.evaluator = self.build_evaluator()
         self.dataset_name = federated_data_handler.sample_handler.dataset.name
         self.f9_checkpoint = Path.f9_checkpoints(self.dataset_name, TypeLearning.FED)
-        self.manager = None
+        self.state_manager = None
 
     def model_fn(self):
         keras_model = model_build(self.properties)
@@ -84,23 +85,40 @@ class FederatedFullConvolutionalAutoEncoder:
     def model_evaluation(self, testing_data):
         return self.evaluator(self.state.global_model_weights, testing_data)
 
+    def init_state_manager(self, path, rounds):
+        dir_create(path)
+        self.state_manager = tff.program.FileProgramStateManager(root_dir=path, prefix='round_', keep_total=rounds,
+                                                                 keep_first=True)
+
+    def get_next_round(self, loop):
+        last_state, last_round = loop.run_until_complete(self.state_manager.load_latest(self.state))
+        if last_state is not None:
+            self.state = last_state
+            return last_round + 1
+        else:
+            return 0
+
     def training(self, start_window: int, end_window: int):
+        loop = asyncio.get_event_loop()
         rounds = self.federated_data_handler.training_parameters.rounds
         path = get_file_path(self.f9_checkpoint, win_space(start_window, end_window))
-        dir_create(path)
+        self.init_state_manager(path, rounds)
+        next_round = self.get_next_round(loop)
 
         loss_handler = LossesHandler(path, TypeLearning.FED)
 
         training_data = self.federated_data_handler.users_data(start_window, end_window)
         testing_data = self.federated_data_handler.users_data(end_window, end_window+1)
 
-        for round_num in range(0, rounds):
-            print('[{}] start: {} | end: {} | round: {}'.format(time(), start_window, end_window, round_num))
-            round_iteration = self.iterative_process.next(self.state, training_data)
-            self.state = round_iteration[0]
+        if next_round < rounds:
+            for round_num in range(0, rounds):
+                print('[{}] start: {} | end: {} | round: {}'.format(time(), start_window, end_window, round_num))
+                round_iteration = self.iterative_process.next(self.state, training_data)
+                self.state = round_iteration[0]
+                loop.run_until_complete(self.state_manager.save(self.state, round_num))
 
-            loss_handler.append_fed(round_iteration[1], self.model_evaluation(testing_data))
-            loss_handler.save()
+                loss_handler.append_fed(round_iteration[1], self.model_evaluation(testing_data))
+                loss_handler.save()
 
         del training_data, testing_data, loss_handler
         gc.collect()
