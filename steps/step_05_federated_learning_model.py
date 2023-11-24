@@ -107,10 +107,11 @@ class FederatedFullConvolutionalAutoEncoder:
 
         loss_handler = LossesHandler(path, TypeLearning.FED)
 
-        training_data = self.federated_data_handler.users_data(start_window, end_window)
-        testing_data = self.federated_data_handler.users_data(end_window, end_window+1)
-
         if next_round < rounds:
+
+            training_data = self.federated_data_handler.users_data(start_window, end_window)
+            testing_data = self.federated_data_handler.users_data(end_window, end_window + 1)
+
             for round_num in range(0, rounds):
                 print('[{}] start: {} | end: {} | round: {}'.format(time(), start_window, end_window, round_num))
                 round_iteration = self.iterative_process.next(self.state, training_data)
@@ -120,7 +121,7 @@ class FederatedFullConvolutionalAutoEncoder:
                 loss_handler.append_fed(round_iteration[1], self.model_evaluation(testing_data))
                 loss_handler.save()
 
-        del training_data, testing_data, loss_handler
+            del training_data, testing_data, loss_handler
         gc.collect()
 
     def encoder_prediction(self, start_window: int, end_window: int):
