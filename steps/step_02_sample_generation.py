@@ -85,6 +85,7 @@ class SampleHandler:
                 max_x = df.x.max()
             if df.y.max() > max_y:
                 max_y = df.y.max()
+            del df
         float_height = (max_y - min_y) / self.dataset.resolution[0]
         float_width = (max_x - min_x) / self.dataset.resolution[1]
         self.dataset.set_height_width(float_height, float_width)
