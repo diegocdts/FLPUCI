@@ -112,7 +112,7 @@ class FederatedFullConvolutionalAutoEncoder:
             training_data = self.federated_data_handler.users_data(start_window, end_window)
             testing_data = self.federated_data_handler.users_data(end_window, end_window + 1)
 
-            for round_num in range(0, rounds):
+            for round_num in range(next_round, rounds):
                 print('[{}] start: {} | end: {} | round: {}'.format(time(), start_window, end_window, round_num))
                 round_iteration = self.iterative_process.next(self.state, training_data)
                 self.state = round_iteration[0]
