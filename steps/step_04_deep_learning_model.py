@@ -23,7 +23,7 @@ class FullConvolutionalAutoEncoder:
 
     @staticmethod
     def checkpoint(path: str):
-        return tf.keras.callbacks.ModelCheckpoint(filepath=get_file_path(path, 'ckpt'),
+        return tf.keras.callbacks.ModelCheckpoint(filepath=get_file_path(path, 'cp.ckpt'),
                                                   save_weights_only=True, verbose=1)
 
     def training(self, start_window: int, end_window: int, parameters: TrainingParameters):
@@ -32,7 +32,7 @@ class FullConvolutionalAutoEncoder:
 
         if path_exists(path):
             loss_handler.load_cen()
-            self.model.load_weights(get_file_path(path, 'ckpt'))
+            self.model.load_weights(get_file_path(path, 'cp.ckpt'))
         else:
             training_data, training_indices_list = self.sample_handler.samples_as_list(start_window, end_window)
             testing_data, testing_indices_list = self.sample_handler.samples_as_list(end_window, end_window + 1)
