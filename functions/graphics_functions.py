@@ -22,7 +22,7 @@ def set_x_ticks(x_ticks: np.array):
     technique = ['BIC', 'AIC', 'Best']
     new_x_ticks = np.array([])
     for index, item in enumerate(x_ticks):
-        new_x_ticks = np.append(new_x_ticks, '{} ({})'.format(technique[index], item))
+        new_x_ticks = np.append(new_x_ticks, '{} ({})'.format(technique[index], item.replace('.1', '')))
     return new_x_ticks
 
 
