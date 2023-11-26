@@ -6,6 +6,6 @@ from steps.step_03_baseline_computation import compute_baseline
 warnings.filterwarnings("ignore")
 
 
-pre_processing(NGSIM)
+pre_processing(SF)
 
-compute_baseline(NGSIM)
+compute_baseline(SF)
