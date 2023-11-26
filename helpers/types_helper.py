@@ -54,16 +54,20 @@ class Dataset:
         self.width = None
 
     def set_height_width(self, float_height: float, float_width: float):
-        if float_height % 2 != 0 or float_height == 0 or not float_height.is_integer:
-            self.height = int(float_height) + 1
-        else:
-            self.height = int(float_height)
+        if float_height.is_integer:
+            float_height = int(float_height) + 1
+        if int(float_height) % 2 != 0:
+            float_height += 1
+        self.height = int(float_height)
+
+        if float_width.is_integer:
+            float_width = int(float_width) + 1
+        if int(float_width) % 2 != 0:
+            float_width += 1
+        self.width = int(float_width)
+
         if self.paddingYX[0]:
             self.height = self.height + 2
-        if float_width % 2 != 0 or float_width == 0 or not float_width.is_integer():
-            self.width = int(float_width) + 1
-        else:
-            self.width = int(float_width)
         if self.paddingYX[1]:
             self.width = self.width + 2
 
