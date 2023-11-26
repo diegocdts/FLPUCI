@@ -41,29 +41,30 @@ class BaselineComputation:
             output_file_path = get_file_path(self.f4_entry_exit, file_name)
             with open(file_path) as input_file:
                 file_lines = input_file.readlines()[1:]
-                first_line = file_lines[0].split(',')
-                win = int(first_line[0])
-                x, y = float(first_line[1]), float(first_line[2])
-                y_i = int(y / self.resolution[0])
-                x_i = int(x / self.resolution[1])
-                current_cell = (x_i * self.height) + y_i
-                entry_cell, exit_cell = int(first_line[3]), int(first_line[3])
-                new_lines = "win,cell,entry,exit\n"
-                for line in file_lines:
-                    split = line.split(',')
-                    window, x, y, time = int(split[0]), float(split[1]), float(split[2]), int(split[3])
-                    y_index = int(y / self.resolution[0])
-                    x_index = int(x / self.resolution[1])
-                    cell = (x_index * self.height) + y_index
-                    if cell != current_cell or win != window:
-                        new_lines += "{},{},{},{}\n".format(win, current_cell, entry_cell, exit_cell)
-                        win = window
-                        current_cell = cell
-                        entry_cell = time
-                    exit_cell = time
-                new_lines += "{},{},{},{}\n".format(win, current_cell, entry_cell, exit_cell)
-                with open(output_file_path, 'w') as output_file:
-                    output_file.write(new_lines)
+                if len(file_lines) > 0:
+                    first_line = file_lines[0].split(',')
+                    win = int(first_line[0])
+                    x, y = float(first_line[1]), float(first_line[2])
+                    y_i = int(y / self.resolution[0])
+                    x_i = int(x / self.resolution[1])
+                    current_cell = (x_i * self.height) + y_i
+                    entry_cell, exit_cell = int(first_line[3]), int(first_line[3])
+                    new_lines = "win,cell,entry,exit\n"
+                    for line in file_lines:
+                        split = line.split(',')
+                        window, x, y, time = int(split[0]), float(split[1]), float(split[2]), int(split[3])
+                        y_index = int(y / self.resolution[0])
+                        x_index = int(x / self.resolution[1])
+                        cell = (x_index * self.height) + y_index
+                        if cell != current_cell or win != window:
+                            new_lines += "{},{},{},{}\n".format(win, current_cell, entry_cell, exit_cell)
+                            win = window
+                            current_cell = cell
+                            entry_cell = time
+                        exit_cell = time
+                    new_lines += "{},{},{},{}\n".format(win, current_cell, entry_cell, exit_cell)
+                    with open(output_file_path, 'w') as output_file:
+                        output_file.write(new_lines)
 
     def window_entry_exit(self):
         file_list = sorted_files(self.f4_entry_exit)
