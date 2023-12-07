@@ -106,6 +106,7 @@ class FederatedFullConvolutionalAutoEncoder:
         next_round = self.get_next_round(loop)
 
         loss_handler = LossesHandler(path, TypeLearning.FED)
+        loss_handler.load_fed(next_round)
 
         if next_round < rounds:
 
