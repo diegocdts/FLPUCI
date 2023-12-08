@@ -14,15 +14,15 @@ from communities_identification import cen_communities_identification, fed_commu
 warnings.filterwarnings("ignore")
 nest_asyncio.apply()
 
-fed_communities_identification(dataset=RT,
+fed_communities_identification(dataset=SF,
                                ae_properties=AE_PROPERTIES_SF,
                                training_parameters=FEDERATED_TRAINING_1,
                                sli_selection=SLI_3,
                                first_interval=0,
-                               last_interval=11,
+                               last_interval=2,
                                validate_at=NEXT,
                                acc_run=True)
-cen_communities_identification(dataset=RT,
+"""cen_communities_identification(dataset=RT,
                                sample_handler=SampleHandler(RT),
                                ae_properties=AE_PROPERTIES_SF,
                                training_parameters=CENTRALIZED_TRAINING_1,
@@ -31,3 +31,4 @@ cen_communities_identification(dataset=RT,
                                last_interval=11,
                                validate_at=NEXT,
                                acc_run=True)
+"""
