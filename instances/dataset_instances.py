@@ -22,3 +22,14 @@ SF = Dataset(name='sanfranciscocabs',
              lon_x_max=-122.38263,
              resolution=(300, 300),
              indices=LatYLonXTimeIndices(0, 1, 3))
+
+RT = Dataset(name='romataxi',
+             hours_per_window=24,
+             first_window=1391212800,
+             last_window=1391299200,
+             lat_y_min=41.84250,
+             lat_y_max=41.94607,
+             lon_x_min=12.42272,
+             lon_x_max=12.56157,
+             resolution=(300, 300),
+             indices=LatYLonXTimeIndices(0, 1, 3))

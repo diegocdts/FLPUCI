@@ -1,7 +1,7 @@
 import warnings
 import nest_asyncio
 
-from instances.dataset_instances import SF
+from instances.dataset_instances import SF, RT
 from instances.fcae_properties_instances import AE_PROPERTIES_SF
 from instances.sample_selection_instances import SLI_3
 from instances.training_instances import FEDERATED_TRAINING_1, CENTRALIZED_TRAINING_1
@@ -13,7 +13,7 @@ from communities_identification import cen_communities_identification, fed_commu
 warnings.filterwarnings("ignore")
 nest_asyncio.apply()
 
-fed_communities_identification(dataset=SF,
+fed_communities_identification(dataset=RT,
                                ae_properties=AE_PROPERTIES_SF,
                                training_parameters=FEDERATED_TRAINING_1,
                                sli_selection=SLI_3,
@@ -21,8 +21,8 @@ fed_communities_identification(dataset=SF,
                                last_interval=11,
                                validate_at=NEXT,
                                acc_run=True)
-cen_communities_identification(dataset=SF,
-                               sample_handler=SampleHandler(SF),
+cen_communities_identification(dataset=RT,
+                               sample_handler=SampleHandler(RT),
                                ae_properties=AE_PROPERTIES_SF,
                                training_parameters=CENTRALIZED_TRAINING_1,
                                sli_selection=SLI_3,
