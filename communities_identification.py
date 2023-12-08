@@ -61,7 +61,7 @@ class Federated:
             start_window = get_start_window(end_window, self.sample_selection)
 
             self.model.training(start_window, end_window)
-"""
+
             validation_start = end_window + validate_at.value - 1
             encodings, indices_list = self.model.encoder_prediction(start_window=validation_start,
                                                                     end_window=validation_start + 1)
@@ -73,7 +73,7 @@ class Federated:
             gc.collect()
         self.interval_evolution.best_k_interval(first_interval + validate_at.value - 1, is_heatmap=False)
         self.interval_evolution.best_k_interval(first_interval + validate_at.value - 1, is_heatmap=True)
-"""
+
 
 def print_info(type_learning, dataset_object, selection):
     print('\n# ------ {} - {} - {} (size: {}) ------ #'.format(type_learning, dataset_object.name,
@@ -111,7 +111,7 @@ def fed_communities_identification(dataset: Dataset,
     print_info(TypeLearning.FED, dataset, sli_selection)
     sli = Federated(dataset, ae_properties, training_parameters, sli_selection)
     sli.training_validation(first_interval, last_interval, validate_at)
-"""
+
     if acc_run:
         print_info(TypeLearning.FED, dataset, ACC)
         acc = Federated(dataset, ae_properties, training_parameters, ACC)
@@ -121,4 +121,3 @@ def fed_communities_identification(dataset: Dataset,
         StrategiesMatch.match_selection_strategy_chosen_ks(dataset, TypeLearning.FED, first_interval + 1, last_interval)
         StrategiesMatch.ssim_match_selection_strategy_chosen_ks(
             dataset, TypeLearning.FED, first_interval + 1, last_interval)
-"""

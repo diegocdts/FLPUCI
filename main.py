@@ -22,8 +22,8 @@ fed_communities_identification(dataset=SF,
                                last_interval=2,
                                validate_at=NEXT,
                                acc_run=True)
-"""cen_communities_identification(dataset=RT,
-                               sample_handler=SampleHandler(RT),
+cen_communities_identification(dataset=SF,
+                               sample_handler=SampleHandler(SF),
                                ae_properties=AE_PROPERTIES_SF,
                                training_parameters=CENTRALIZED_TRAINING_1,
                                sli_selection=SLI_3,
@@ -31,4 +31,3 @@ fed_communities_identification(dataset=SF,
                                last_interval=11,
                                validate_at=NEXT,
                                acc_run=True)
-"""
