@@ -1,3 +1,4 @@
+import tensorrt
 import warnings
 import nest_asyncio
 
