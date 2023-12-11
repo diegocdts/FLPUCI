@@ -15,7 +15,7 @@ warnings.filterwarnings("ignore")
 nest_asyncio.apply()
 
 fed_communities_identification(dataset=NGSIM,
-                               ae_properties=NGSIM,
+                               ae_properties=AE_PROPERTIES_NGSIM,
                                training_parameters=FEDERATED_TRAINING_1,
                                sli_selection=SLI_3,
                                first_interval=0,
