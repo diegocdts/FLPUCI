@@ -8,7 +8,7 @@ AE_PROPERTIES_NGSIM = FCAEProperties(input_shape=(4, 56, 1),
                                      encode_strides=[2, 2],
                                      padding='same',
                                      latent_space=10,
-                                     learning_rate=0.001)
+                                     learning_rate=0.002)
 
 AE_PROPERTIES_SF = FCAEProperties(input_shape=(40, 40, 1),
                                   encode_layers=[128, 64, 32],
