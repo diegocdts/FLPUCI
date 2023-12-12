@@ -5,21 +5,17 @@ from helpers.types_helper import TypeLearning
 
 
 class GraphicLabels(Enum):
-    EPOCHS = 'epochs'
-    ROUNDS = 'rounds'
-    LOSS = 'loss'
-    CONTACT_TIME_SEC = 'avg contact time (s)'
-    NUM_CLUSTERS = 'number of clusters'
-    INTERVAL_INDICES = 'interval indices'
-    AVG_CONTACT_TIME_SEC = 'avg contact time (s)'
-    K_VALUES = 'k values'
+    EPOCHS = 'EPOCHS'
+    ROUNDS = 'ROUNDS'
+    LOSS = 'LOSS'
+    CONTACT_TIME_SEC = 'AVG CONTACT TIME (S)'
+    NUM_CLUSTERS = 'NUMBER OF CLUSTERS'
+    INTERVAL_INDICES = 'INTERVAL INDICES'
+    K_VALUES = 'K VALUES'
 
     @staticmethod
     def metric(metric: str):
         return 'normalized {}'.format(metric).upper()
-
-    def __str__(self):
-        return str(self.value).upper()
 
 
 class GraphicLegends(Enum):

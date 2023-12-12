@@ -325,7 +325,7 @@ class StrategiesMatch:
             ax.bar(x_labels + (3 * width / 2), diffs_sli, width, color=color_list.pop(),
                    label='{} SLI'.format(new_sources()[2]))
 
-            ax.set_ylabel(GraphicLabels.AVG_CONTACT_TIME_SEC, fontsize=GraphProps.FONT_SIZE_LEGEND.value)
+            ax.set_ylabel(GraphicLabels.CONTACT_TIME_SEC, fontsize=GraphProps.FONT_SIZE_LEGEND.value)
             ax.set_xlabel(GraphicLabels.K_VALUES, fontsize=GraphProps.FONT_SIZE_LEGEND.value)
             ax.set_xticks(x_labels)
             ax.set_xticklabels(labels, fontsize=GraphProps.FONT_SIZE_LEGEND.value)
